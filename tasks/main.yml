@@ -1,0 +1,13 @@
+---
+- name: Add Docker GPG Key
+  apt_key: url=https://download.docker.com/linux/debian/gpg state=present
+
+- name: Ensure Docker APT repo is present
+  apt_repository:
+    repo: "{{ docker_apt_repo }}"
+
+- name: Install / update docker
+  apt:
+    name: "{{ docker_version }}"
+    update_cache: true
+  notify: restart docker
