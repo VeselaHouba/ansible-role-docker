@@ -1,4 +1,8 @@
 ---
+- name: Install dependencies
+  apt:
+    name: gpg
+
 - name: Add Docker GPG Key
   apt_key: url=https://download.docker.com/linux/debian/gpg state=present
 
