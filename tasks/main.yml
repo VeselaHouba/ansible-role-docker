@@ -1,7 +1,7 @@
 ---
 - name: Install dependencies
   apt:
-    name: gpg
+    name: "{{ 'gpg' if ansible_distribution_major_version is version('9','>') else 'gnupg' }}"
 
 - name: Add Docker GPG Key
   apt_key: url=https://download.docker.com/linux/debian/gpg state=present
