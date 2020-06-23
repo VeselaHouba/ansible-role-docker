@@ -1,0 +1,17 @@
+---
+stages:
+  - molecule
+
+variables:
+  DOCKER_TLS_CERTDIR: ""
+
+image: veselahouba/molecule
+
+services:
+  - docker:dind
+
+molecule:
+  stage: molecule
+  script:
+    - ansible --version
+    - molecule lint
