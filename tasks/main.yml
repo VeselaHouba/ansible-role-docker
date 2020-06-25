@@ -10,8 +10,35 @@
   apt_repository:
     repo: "{{ docker_apt_repo }}"
 
+- name: Gather packages facts
+  package_facts:
+    manager: apt
+
+- name: Check running instances before install/upgrade
+  shell: docker ps -q | sort
+  register: before
+  changed_when: false
+  when: "'docker-ce' in ansible_facts.packages"
+
 - name: Install / update docker
   apt:
     name: "{{ docker_version }}"
     update_cache: true
   notify: restart docker
+
+- name: Check running instances after restart
+  shell: docker ps -q | sort
+  register: after
+  changed_when: false
+
+- name: Compare lists of instances
+  fail:
+    msg: |
+      List of instances is not the same as before restart.
+      Before:
+      {{ before.stdout }}
+      After:
+      {{ after.stdout }}
+  when:
+    - before.stdout is defined
+    - before.stdout != after.stdout
