@@ -2,3 +2,5 @@
 docker_version: docker-ce=18.06.0~ce~3-0~debian
 # stretch, jessie, ...
 docker_apt_repo: "deb https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable"
+docker_enable_restart: true
+docker_address_pool: 172.31.0.0/16

@@ -42,3 +42,9 @@
   when:
     - before.stdout is defined
     - before.stdout != after.stdout
+
+- name: Deploy docker daemon template
+  template:
+    src: etc/docker/daemon.json.j2
+    dest: /etc/docker/daemon.json
+  notify: restart docker
