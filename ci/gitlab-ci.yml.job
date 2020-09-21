@@ -1,0 +1,10 @@
+
+OS_VERSION:
+  stage: molecule
+  script:
+    - ansible --version
+    - molecule test --all
+  variables:
+    MOLECULE_INSTANCE_IMAGE: "OS_VERSION"
+  tags:
+    - molecule

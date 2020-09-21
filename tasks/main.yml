@@ -1,10 +1,18 @@
 ---
+- name: Determine package name
+  set_fact:
+    _gpg_package: gpg
+  when:
+    (ansible_distribution == 'Debian' and ansible_distribution_major_version is version('9','>') or
+    ansible_distribution == 'Ubuntu' and ansible_distribution_major_version is version('16','>'))
+
 - name: Install dependencies
   apt:
-    name: "{{ 'gpg' if ansible_distribution_major_version is version('9','>') else 'gnupg' }}"
+    name: "{{ _gpg_package|default('gnupg') }}"
 
 - name: Add Docker GPG Key
-  apt_key: url=https://download.docker.com/linux/debian/gpg state=present
+  apt_key:
+    url: "{{ docker_url }}/gpg"
 
 - name: Ensure Docker APT repo is present
   apt_repository:
@@ -15,10 +23,14 @@
     manager: apt
 
 - name: Check running instances before install/upgrade
-  shell: docker ps -q | sort
+  shell: |
+    set -o pipefail
+    docker ps -q | sort
   register: before
   changed_when: false
   when: "'docker-ce' in ansible_facts.packages"
+  args:
+    executable: /bin/bash
 
 - name: Install / update docker
   apt:
@@ -26,10 +38,20 @@
     update_cache: true
   notify: restart docker
 
+- name: Make sure docker is running
+  systemd:
+    name: docker
+    state: started
+    enabled: true
+
 - name: Check running instances after restart
-  shell: docker ps -q | sort
+  shell: |
+    set -o pipefail
+    docker ps -q | sort
   register: after
   changed_when: false
+  args:
+    executable: /bin/bash
 
 - name: Compare lists of instances
   fail:
@@ -42,6 +64,12 @@
   when:
     - before.stdout is defined
     - before.stdout != after.stdout
+
+- name: Create config dir if not present
+  file:
+    state: directory
+    path: /etc/docker/
+    mode: 0755
 
 - name: Deploy docker daemon template
   template:
