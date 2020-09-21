@@ -1,17 +1,21 @@
 ---
 stages:
+  - generate
   - molecule
 
-variables:
-  DOCKER_TLS_CERTDIR: ""
-
-image: veselahouba/molecule
-
-services:
-  - docker:dind
-
-molecule:
-  stage: molecule
+generate-molecule:
+  stage: generate
   script:
-    - ansible --version
-    - molecule lint
+    - ./ci/generate_molecule_tasks.sh
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - .gitlab-ci-molecule.yml
+
+molecules:
+  stage: molecule
+  trigger:
+    strategy: depend
+    include:
+      - artifact: .gitlab-ci-molecule.yml
+        job: generate-molecule
