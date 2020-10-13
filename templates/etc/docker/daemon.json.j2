@@ -5,5 +5,8 @@
         "base" : "{{ docker_address_pool }}",
         "size" : 24
       }
-    ]
+    ]{% if not docker_manage_iptables %},
+    "iptables": false
+    {%- endif %}
+
 }

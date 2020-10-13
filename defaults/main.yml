@@ -5,3 +5,4 @@ docker_url: "https://download.docker.com/linux/{{ ansible_distribution|lower }}"
 docker_apt_repo: "deb {{ docker_url }} {{ ansible_distribution_release }} stable"
 docker_enable_restart: true
 docker_address_pool: 172.31.0.0/16
+docker_manage_iptables: true
