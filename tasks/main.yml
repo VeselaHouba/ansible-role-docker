@@ -75,4 +75,5 @@
   template:
     src: etc/docker/daemon.json.j2
     dest: /etc/docker/daemon.json
+    mode: 0644
   notify: restart docker

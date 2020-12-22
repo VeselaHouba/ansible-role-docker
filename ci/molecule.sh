@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
-if [ "${MOLECULE_INSTANCE_IMAGE}" == "" ]; then
-  echo "Variable MOLECULE_INSTANCE_IMAGE has to be set"
-  echo "Example values:"
-  grep -v ^\# "$(dirname "${0}")/os_versions.txt"
-  exit 1
+if [ "${MOLECULE_IMAGE}" == "" ]; then
+  echo "Variable MOLECULE_IMAGE not set, using default"
 fi
-
 if [ "${HCLOUD_TOKEN}" == "" ]; then
   echo "Variable HCLOUD_TOKEN has to be set"
   exit 1
@@ -18,8 +14,13 @@ docker \
   -v "$(pwd):/tmp/$(basename "${PWD}")" \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -w "/tmp/$(basename "${PWD}")" \
-  -e MOLECULE_INSTANCE_IMAGE \
   -e MOLECULE_NO_LOG=false \
+  -e MOLECULE_IMAGE \
+  -e MOLECULE_DOCKER_COMMAND \
   -e HCLOUD_TOKEN \
-  veselahouba/molecule:v3 \
-  molecule "${@}"
+  veselahouba/molecule  bash -c "
+  shellcheck_wrapper && \
+  flake8 && \
+  yamllint . && \
+  ansible-lint && \
+  molecule ${*}"
