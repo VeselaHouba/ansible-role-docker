@@ -1,21 +1,49 @@
 ---
 stages:
-  - generate
+  - lint
   - molecule
 
-generate-molecule:
-  stage: generate
-  script:
-    - ./ci/generate_molecule_tasks.sh
-  artifacts:
-    expire_in: 1 hour
-    paths:
-      - .gitlab-ci-molecule.yml
+variables:
+  DOCKER_TLS_CERTDIR: ""
 
-molecules:
+services:
+  - docker:dind
+
+lint:
+  stage: lint
+  image: veselahouba/molecule
+  script:
+    - shellcheck_wrapper
+    - flake8
+    - yamllint .
+    - ansible-lint
+
+molecule_legacy:
   stage: molecule
-  trigger:
-    strategy: depend
-    include:
-      - artifact: .gitlab-ci-molecule.yml
-        job: generate-molecule
+  image: veselahouba/molecule
+  script:
+    - ansible --version
+    - molecule test --scenario-name=default
+    - molecule test --scenario-name=19.03.13
+  tags:
+    - molecule
+  parallel:
+    matrix:
+      - MOLECULE_IMAGE:
+          - debian-9
+
+molecule:
+  stage: molecule
+  image: veselahouba/molecule
+  script:
+    - ansible --version
+    - molecule test --all
+  tags:
+    - molecule
+  parallel:
+    matrix:
+      - MOLECULE_IMAGE:
+          - debian-10
+          - ubuntu-16.04
+          - ubuntu-18.04
+          - ubuntu-20.04
