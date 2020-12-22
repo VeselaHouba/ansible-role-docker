@@ -11,9 +11,3 @@ provisioner:
   name: ansible
 verifier:
   name: testinfra
-lint: |
-  set -e
-  yamllint .
-  ansible-lint -x 503
-  flake8
-  shellcheck_wrapper
