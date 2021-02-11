@@ -4,7 +4,7 @@ dependency:
 driver:
   name: hetznercloud
 platforms:
-  - name: docker-ce-${MOLECULE_IMAGE}
+  - name: ${DRONE_REPO_NAME}-${MOLECULE_IMAGE}-${REF}
     server_type: cx11
     image: ${MOLECULE_IMAGE}
 provisioner:

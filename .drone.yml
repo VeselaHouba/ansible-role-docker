@@ -26,10 +26,11 @@ steps:
     commands:
       - ansible --version
       - molecule --version
+      - REF=$$(echo $DRONE_COMMIT_REF | awk -F'/' '{print $$3}')
       # Loop instead of matrix
       - |
         for MOLECULE_IMAGE in $${MOLECULE_IMAGES}; do
-          export MOLECULE_IMAGE
+          export MOLECULE_IMAGE DRONE_REPO_NAME REF
           molecule test --all
         done
 
