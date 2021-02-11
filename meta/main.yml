@@ -2,7 +2,7 @@
 dependencies: []
 galaxy_info:
   author: Jan Michalek
-  role_name: docker_ce
+  role_name: docker
   description: Ansible role for deploying docker binaries
   company: m-cloud.cz
   license: MIT
@@ -10,7 +10,6 @@ galaxy_info:
   platforms:
     - name: Debian
       versions:
-        - stretch
         - buster
     - name: Ubuntu
       versions:
