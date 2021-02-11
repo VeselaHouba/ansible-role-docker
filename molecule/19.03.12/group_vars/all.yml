@@ -1,0 +1,2 @@
+---
+docker_version: "docker-ce=5:19.03.12~3-0~{{ ansible_distribution|lower }}-{{ ansible_distribution_release }}"
