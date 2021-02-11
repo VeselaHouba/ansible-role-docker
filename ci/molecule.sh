@@ -7,6 +7,9 @@ if [ "${HCLOUD_TOKEN}" == "" ]; then
   exit 1
 fi
 
+REPO_NAME="$(basename "${PWD}")"
+echo Using repo "${REPO_NAME}"
+
 docker \
   run \
   --rm \
@@ -18,7 +21,9 @@ docker \
   -e MOLECULE_IMAGE \
   -e MOLECULE_DOCKER_COMMAND \
   -e HCLOUD_TOKEN \
-  veselahouba/molecule  bash -c "
+  -e REF=manual \
+  -e REPO_NAME \
+  veselahouba/molecule bash -c "
   shellcheck_wrapper && \
   flake8 && \
   yamllint . && \
