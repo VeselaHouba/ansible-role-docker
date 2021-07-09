@@ -1,5 +1,5 @@
 ---
-docker_version: "docker-ce=5:20.10.3~3-0~{{ ansible_distribution|lower }}-{{ ansible_distribution_release }}"
+docker_version: "docker-ce=5:20.10.7~3-0~{{ ansible_distribution|lower }}-{{ ansible_distribution_release }}"
 # stretch, jessie, ...
 docker_url: "https://download.docker.com/linux/{{ ansible_distribution|lower }}"
 docker_apt_repo: "deb {{ docker_url }} {{ ansible_distribution_release }} stable"
