@@ -9,6 +9,7 @@ fi
 
 REPO_NAME="$(basename "${PWD}")"
 echo Using repo "${REPO_NAME}"
+export REPO_NAME MOLECULE_IMAGE
 
 docker \
   run \
@@ -24,7 +25,6 @@ docker \
   -e REF=manual \
   -e REPO_NAME \
   veselahouba/molecule bash -c "
-  shellcheck_wrapper && \
   flake8 && \
   yamllint . && \
   ansible-lint && \
