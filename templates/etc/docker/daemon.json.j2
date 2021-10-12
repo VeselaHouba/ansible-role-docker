@@ -1,5 +1,9 @@
 {
     "storage-driver": "overlay2",
+    "log-driver": "json-file",
+    "log-opts": {
+      "max-size": "{{ docker_max_log_size }}"
+    },
     "default-address-pools" : [
       {
         "base" : "{{ docker_address_pool }}",
@@ -8,5 +12,4 @@
     ]{% if not docker_manage_iptables %},
     "iptables": false
     {%- endif %}
-
 }
