@@ -37,11 +37,20 @@
   args:
     executable: /bin/bash
 
+- name: Unhold docker version for install
+  command: apt-mark unhold docker-ce
+  changed_when: false
+
 - name: Install / update docker
   apt:
     name: "{{ docker_version }}"
     update_cache: true
   notify: restart docker
+
+- name: Hold docker version for install
+  command: apt-mark hold docker-ce
+  when: docker_version_lock
+  changed_when: false
 
 - name: Make sure docker is running
   systemd:
