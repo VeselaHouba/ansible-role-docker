@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 if [ "${MOLECULE_IMAGE}" == "" ]; then
   echo "Variable MOLECULE_IMAGE not set, using default"
+  MOLECULE_IMAGE=debian-11
 fi
 if [ "${HCLOUD_TOKEN}" == "" ]; then
   echo "Variable HCLOUD_TOKEN has to be set"

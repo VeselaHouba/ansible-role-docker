@@ -1,0 +1,4 @@
+---
+_version: 20.10.10
+docker_version: "docker-ce=5:{{ _version }}~3-0~{{ ansible_distribution|lower }}-{{ ansible_distribution_release }}"
+docker_version_lock: true
