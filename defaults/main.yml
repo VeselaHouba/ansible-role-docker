@@ -9,3 +9,5 @@ docker_address_pool: 172.31.0.0/16
 docker_manage_iptables: true
 docker_max_log_size: 100m
 docker_version_lock: false
+docker_auto_system_pruning: false
+docker_dangling_volumes_pruning: false

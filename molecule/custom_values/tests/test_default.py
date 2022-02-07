@@ -47,3 +47,9 @@ def test_docker_version_lock(host):
     package_after = host.package("docker-ce").version
     assert def_version in package_after
     assert package_after == package_before
+
+
+def test_cleanup_cron(host):
+    cronfile = host.file('/etc/cron.d/docker')
+    assert cronfile.contains('docker system prune')
+    assert cronfile.contains('docker volume rm')

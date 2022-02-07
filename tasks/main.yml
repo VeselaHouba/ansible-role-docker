@@ -91,3 +91,5 @@
     dest: /etc/docker/daemon.json
     mode: 0644
   notify: restart docker
+
+- include_tasks: cleaning.yml

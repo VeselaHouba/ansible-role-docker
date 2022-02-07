@@ -1,0 +1,18 @@
+---
+- name: Manage automatic system pruning
+  cron:
+    name: Docker system prune
+    cron_file: docker
+    job: docker system prune -fa
+    user: root
+    special_time: daily
+    state: "{{ 'present' if docker_auto_system_pruning else 'absent' }}"
+
+- name: Manage automatic dangling volumes cleanup
+  cron:
+    name: Docker dangling volumes prune
+    cron_file: docker
+    job: docker volume rm $(docker volume ls -qf dangling=true)
+    user: root
+    special_time: daily
+    state: "{{ 'present' if docker_dangling_volumes_pruning else 'absent' }}"

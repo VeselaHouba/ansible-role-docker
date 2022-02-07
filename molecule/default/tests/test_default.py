@@ -22,3 +22,8 @@ def test_docker_container_start(host):
         c = host.run('docker run --rm alpine:3.12.0 cat /etc/alpine-release')
         assert c.rc == 0
         assert '3.12.0' in c.stdout
+
+
+def test_cleanup_cron(host):
+    cronfile = host.file('/etc/cron.d/docker')
+    assert not cronfile.exists
