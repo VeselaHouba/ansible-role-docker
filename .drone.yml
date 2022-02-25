@@ -1,7 +1,6 @@
 kind: template
-load: drone.star
+load: drone-hetzner.star
 data:
-  use_hetzner: true
   hetzner_images:
     - debian-10
     - debian-11
