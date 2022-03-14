@@ -11,3 +11,4 @@ docker_max_log_size: 100m
 docker_version_lock: false
 docker_auto_system_pruning: false
 docker_dangling_volumes_pruning: false
+docker_custom_logging_options:

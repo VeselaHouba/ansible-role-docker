@@ -1,9 +1,13 @@
 {
     "storage-driver": "overlay2",
+{% if (docker_custom_logging_options is not none) %}
+    {{ docker_custom_logging_options|indent( width=4 ) }},
+{% else %}
     "log-driver": "json-file",
     "log-opts": {
       "max-size": "{{ docker_max_log_size }}"
     },
+{% endif %}
     "default-address-pools" : [
       {
         "base" : "{{ docker_address_pool }}",

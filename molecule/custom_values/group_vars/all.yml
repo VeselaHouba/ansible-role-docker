@@ -4,3 +4,8 @@ docker_version: "docker-ce=5:{{ _version }}~3-0~{{ ansible_distribution|lower }}
 docker_version_lock: true
 docker_auto_system_pruning: true
 docker_dangling_volumes_pruning: true
+docker_custom_logging_options: |-
+  "log-driver": "syslog",
+  "log-opts": {
+    "tag": "{{ '{{' }}.Name{{ '}}' }}"
+  }

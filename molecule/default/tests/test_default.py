@@ -27,3 +27,8 @@ def test_docker_container_start(host):
 def test_cleanup_cron(host):
     cronfile = host.file('/etc/cron.d/docker')
     assert not cronfile.exists
+
+
+def test_daemon_config(host):
+    config = host.file('/etc/docker/daemon.json')
+    assert config.contains('"max-size": "100m"')

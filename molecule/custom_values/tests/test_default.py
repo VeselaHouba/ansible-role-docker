@@ -53,3 +53,8 @@ def test_cleanup_cron(host):
     cronfile = host.file('/etc/cron.d/docker')
     assert cronfile.contains('docker system prune')
     assert cronfile.contains('docker volume rm')
+
+
+def test_daemon_config(host):
+    config = host.file('/etc/docker/daemon.json')
+    assert config.contains('"log-driver": "syslog"')
