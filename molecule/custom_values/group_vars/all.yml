@@ -7,5 +7,5 @@ docker_dangling_volumes_pruning: true
 docker_custom_logging_options: |-
   "log-driver": "syslog",
   "log-opts": {
-    "tag": "{{ '{{' }}.Name{{ '}}' }}"
+    "tag": "{{ 'docker-{{' }}.Name{{ '}}' }}"
   }
