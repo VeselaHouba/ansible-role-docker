@@ -33,7 +33,9 @@
     docker ps -q | sort
   register: before
   changed_when: false
-  when: "'docker-ce' in ansible_facts.packages"
+  when:
+    - "'docker-ce' in ansible_facts.packages"
+    - docker_check_running
   args:
     executable: /bin/bash
 
@@ -58,26 +60,28 @@
     state: started
     enabled: true
 
-- name: Check running instances after restart
-  shell: |
-    set -o pipefail
-    docker ps -q | sort
-  register: after
-  changed_when: false
-  args:
-    executable: /bin/bash
+- block:
+    - name: Check running instances after restart
+      shell: |
+        set -o pipefail
+        docker ps -q | sort
+      register: after
+      changed_when: false
+      args:
+        executable: /bin/bash
 
-- name: Compare lists of instances
-  fail:
-    msg: |
-      List of instances is not the same as before restart.
-      Before:
-      {{ before.stdout }}
-      After:
-      {{ after.stdout }}
-  when:
-    - before.stdout is defined
-    - before.stdout != after.stdout
+    - name: Compare lists of instances
+      fail:
+        msg: |
+          List of instances is not the same as before restart.
+          Before:
+          {{ before.stdout }}
+          After:
+          {{ after.stdout }}
+      when:
+        - before.stdout is defined
+        - before.stdout != after.stdout
+  when: docker_check_running
 
 - name: Create config dir if not present
   file:

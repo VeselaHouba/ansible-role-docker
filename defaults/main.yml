@@ -12,3 +12,5 @@ docker_version_lock: false
 docker_auto_system_pruning: false
 docker_dangling_volumes_pruning: false
 docker_custom_logging_options:
+# Check that list of running containers is same on start and end of run
+docker_check_running: false

@@ -9,3 +9,4 @@ docker_custom_logging_options: |-
   "log-opts": {
     "tag": "{{ 'docker-{{' }}.Name{{ '}}' }}"
   }
+docker_check_running: true
